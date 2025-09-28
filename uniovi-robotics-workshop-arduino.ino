@@ -28,6 +28,7 @@ const int   daylightOffset_sec = 0; // adjust for DST
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
 Adafruit_MPU6050 mpu;
+sensors_event_t a, g, temp;
 
 // Define a struct to hold sensor readings
 struct IMUData {
@@ -50,13 +51,13 @@ void setup() {
   setup_wifi();
   
   // setup mqtt client
-  setup_mqtt_client()
+  setup_mqtt_client();
 
   // setup MPU sensor
-  setup_mpu_sensor()
+  setup_mpu_sensor();
 
   // setup real time
-  setup_time()
+  setup_time();
 }
 
 void setup_wifi() {
@@ -198,42 +199,27 @@ void loop() {
   
   client.loop();
 
-  long now = millis();
-  if (now - lastMsg > 2000) {
-    lastMsg = now;
-        
-    // Get the current time and date from the chip.
-    Time t = rtc.time();
+  // get sensor data
+  IMUData imu = getSensorData();
 
-    // Format the time and date and insert into the temporary buffer.
-    char datetime[50];
-    snprintf(datetime, sizeof(datetime), "%04d-%02d-%02dT%02d:%02d:%02d", t.yr, t.mon, t.date, t.hr, t.min, t.sec);
-  
-    // Print the formatted string to serial so we can see the time.
-    Serial.println(datetime);
-  
-    // get sensor data
-    IMUData imu = readIMU();
+  // Build JSON from sensor data
+  StaticJsonDocument<200> doc;
+  doc["accX"] = imu.ax;
+  doc["accY"] = imu.ay;
+  doc["accZ"] = imu.az;
+  doc["gycX"] = imu.gx;
+  doc["gycY"] = imu.gy;
+  doc["gycZ"] = imu.gz;
+  doc["temp"] = imu.temp;
+  //doc["timestamp"] = millis();
+  doc["timestamp"] = getTimeNow();
 
-    // Build JSON from sensor data
-    StaticJsonDocument<200> doc;
-    doc["accX"] = imu.ax;
-    doc["accY"] = imu.ay;
-    doc["accZ"] = imu.az;
-    doc["gycX"] = imu.gx;
-    doc["gycY"] = imu.gy;
-    doc["gycZ"] = imu.gz;
-    doc["temp"] = imu.temp;
-    //doc["timestamp"] = millis();
-    doc["timestamp"] = getTimeNow();
+  char buffer[256];
+  size_t n = serializeJson(doc, buffer);
 
-    char buffer[256];
-    size_t n = serializeJson(doc, buffer);
+  // Publish JSON to MQTT topic
+  client.publish("arduino/imu", buffer, n);  
 
-    // Publish JSON to MQTT topic
-    client.publish("arduino/imu", buffer, n);  
-
-    Serial.println(buffer); // Debug
-    delay(1000);    
-  }
+  Serial.println(buffer); // Debug
+  delay(1000);   
 }
