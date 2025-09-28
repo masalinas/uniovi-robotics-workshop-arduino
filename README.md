@@ -4,7 +4,6 @@ Arduino sketch to get MPU sensor data and publish to a MQTT topic
 # Board 
 - Arduino ESP8266WiFi 
 
-
 ## Dependencies:
 
 - PubSubClient by Nick O'Leray v2.8
