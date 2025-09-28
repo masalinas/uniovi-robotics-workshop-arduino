@@ -37,29 +37,6 @@ struct IMUData {
   float temp;         // temperature (°C)
 };
 
-void setup() {
-  // Initialize serial speed comunication
-  Serial.begin(115200);
-
-  while (!Serial)
-    delay(10);
-
-  // Initialize the BUILTIN_LED pin as an output
-  pinMode(BUILTIN_LED, OUTPUT);
-
-  // setup wifi  
-  setup_wifi();
-  
-  // setup mqtt client
-  setup_mqtt_client();
-
-  // setup MPU sensor
-  setup_mpu_sensor();
-
-  // setup real time
-  setup_time();
-}
-
 void setup_wifi() {
   delay(10);
   
@@ -122,6 +99,29 @@ void setup_mpu_sensor() {
 
 void setup_time() {
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+}
+
+void setup() {
+  // Initialize serial speed comunication
+  Serial.begin(115200);
+
+  while (!Serial)
+    delay(10);
+
+  // Initialize the BUILTIN_LED pin as an output
+  pinMode(BUILTIN_LED, OUTPUT);
+
+  // setup wifi  
+  setup_wifi();
+  
+  // setup mqtt client
+  setup_mqtt_client();
+
+  // setup MPU sensor
+  setup_mpu_sensor();
+
+  // setup real time
+  setup_time();
 }
 
 void reconnect() {
