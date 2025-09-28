@@ -15,8 +15,8 @@ const int MQTT_PORT = 1883;
 const char* MQTT_USERNAME = "admin";
 const char* MQTT_PASSWORD = "password";
 const char* MQTT_CLIENT_ID = "ARD01";
-const char* MQTT_TOPIC_SENSOR_TP01 = "uniovi/poc/temperature/TP01";
-const char* MQTT_DEVICE_TOPIC = "devices/ARD01";
+const char* MQTT_TOPIC_SENSOR = "uniovi/poc/temperature";
+const char* MQTT_TOPIC_DEVICE = "devices/ARD01";
 const int MQTT_FREQUENCY = 5000;
 
 // Time values
@@ -124,6 +124,31 @@ void setup_time() {
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 }
 
+void reconnect() {
+  // Loop until we're reconnected
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    
+    // Attempt to connect
+    if (client.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD)) {
+      Serial.println("connected");
+            
+      // ... and resubscribe
+      client.subscribe(MQTT_TOPIC_DEVICE);
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      String mess = "try again in ";
+      mess.concat(MQTT_FREQUENCY);
+      mess.concat(" seconds"); 
+      Serial.println(mess);
+      
+      // Wait MQTT_FRECUENCY seconds before retrying
+      delay(MQTT_FREQUENCY);
+    }
+  }
+}
+
 IMUData getSensorData() {  
   // get mpu sensor data
   mpu.getEvent(&a, &g, &temp);
@@ -153,31 +178,6 @@ IMUData getSensorData() {
   data.temp = temp.temperature;
 
   return data;
-}
-
-void reconnect() {
-  // Loop until we're reconnected
-  while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
-    
-    // Attempt to connect
-    if (client.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD)) {
-      Serial.println("connected");
-            
-      // ... and resubscribe
-      client.subscribe(MQTT_DEVICE_TOPIC);
-    } else {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      String mess = "try again in ";
-      mess.concat(MQTT_FREQUENCY);
-      mess.concat(" seconds"); 
-      Serial.println(mess);
-      
-      // Wait MQTT_FRECUENCY seconds before retrying
-      delay(MQTT_FREQUENCY);
-    }
-  }
 }
 
 String getTimeNow() {
@@ -218,7 +218,7 @@ void loop() {
   size_t n = serializeJson(doc, buffer);
 
   // Publish JSON to MQTT topic
-  client.publish("arduino/imu", buffer, n);  
+  client.publish(MQTT_TOPIC_SENSOR, buffer, n);  
 
   Serial.println(buffer); // Debug
   delay(1000);   
