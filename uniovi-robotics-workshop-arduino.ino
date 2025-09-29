@@ -5,24 +5,26 @@
 #include <ArduinoJson.h>
 #include "time.h"
 
-// WIFI values
-const char* WIFI_SSID = "MOVISTAR_7F50";
-const char* WIFI_PASSWORD = "sg3iks7rRm47ijs77ing";
+// WIFI setups
+//const char* WIFI_SSID = "MOVISTAR_7F50";
+//const char* WIFI_PASSWORD = "sg3iks7rRm47ijs77ing";
+const char* WIFI_SSID = "Uniovi-i40";
+const char* WIFI_PASSWORD = "1000000001";
 
-// MQTT values
-const char* MQTT_HOST = "192.168.1.167";
-const int MQTT_PORT = 1883;
+// MQTT setups
+const char* MQTT_HOST = "6.tcp.eu.ngrok.io";
+const int MQTT_PORT = 13455;
 const char* MQTT_USERNAME = "admin";
 const char* MQTT_PASSWORD = "password";
 const char* MQTT_CLIENT_ID = "ARD01";
-const char* MQTT_TOPIC_SENSOR = "uniovi/poc/temperature";
-const char* MQTT_TOPIC_DEVICE = "devices/ARD01";
+const char* MQTT_TOPIC_SENSOR = "sensors/ACC01/data";
+const char* MQTT_TOPIC_DEVICE = "devices/ARD01/data";
 const int MQTT_FREQUENCY = 5000;
 
-// Time values
+// Time setups
 const char* ntpServer = "pool.ntp.org";
-const long  gmtOffset_sec = 0;      // adjust if you want local timezone
-const int   daylightOffset_sec = 0; // adjust for DST
+const long  gmtOffset_sec = 3600;      // Spain = UTC+1
+const int   daylightOffset_sec = 7200; // adjust for DST winter timezone
 
 // Arduino sensor and clients
 WiFiClient wifiClient;
