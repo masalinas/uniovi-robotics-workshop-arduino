@@ -1,5 +1,5 @@
 # Description
-Microcontroller sketch to get data from a IMU sensor and publish to a MQTT topic using:
+Microcontroller sketchs to get data from a IMU sensor and publish to a MQTT topic using:
 
 - [ESP8266 microcontroller with MPU6050 IMU sensor](./ESP8266_MPU6050/README.md).
 
