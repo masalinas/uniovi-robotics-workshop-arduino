@@ -1,9 +1,12 @@
-#include <ESP8266WiFi.h>
+#include <Wire.h>
+#include <WiFi.h>
 #include <PubSubClient.h>
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <ArduinoJson.h>
 #include "time.h"
+
+#define LED_PIN 2   // Most ESP32 DevKitC boards have the onboard LED on GPIO 2
 
 // WIFI setups
 //const char* WIFI_SSID = "MOVISTAR_7F50";
@@ -73,11 +76,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   // Switch on the LED if an 1 was received as first character
   if ((char)payload[0] == '1') {
-    digitalWrite(BUILTIN_LED, LOW);   // Turn the LED on (Note that LOW is the voltage level
+    digitalWrite(LED_PIN, LOW);   // Turn the LED on (Note that LOW is the voltage level
     // but actually the LED is on; this is because
     // it is acive low on the ESP-01)
   } else {
-    digitalWrite(BUILTIN_LED, HIGH);  // Turn the LED off by making the voltage HIGH
+    digitalWrite(LED_PIN, HIGH);  // Turn the LED off by making the voltage HIGH
   }
 }
 
@@ -110,8 +113,8 @@ void setup() {
   while (!Serial)
     delay(10);
 
-  // Initialize the BUILTIN_LED pin as an output
-  pinMode(BUILTIN_LED, OUTPUT);
+  // Initialize the LED_PIN pin as an output
+  pinMode(LED_PIN, OUTPUT);
 
   // setup wifi  
   setup_wifi();

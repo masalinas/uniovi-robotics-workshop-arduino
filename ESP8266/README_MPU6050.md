@@ -1,5 +1,5 @@
 # Description
-Arduino sketch to get MPU sensor data and publish to a MQTT topic using the board ESP8266 and the IMU MPU6050.
+Microntroller sketch to get MPU sensor data and publish to a MQTT topic using the board ESP8266 and the IMU MPU6050.
 
 ## Install Board Drivers
 

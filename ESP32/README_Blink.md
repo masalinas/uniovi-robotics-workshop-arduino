@@ -1,5 +1,5 @@
 # Description
-Microntroller sketch to get MPU sensor data and publish to a MQTT topic, using the board ESP32 (ESP32 WROOM-D) and the IMU MPU6050.
+Microntroller sketch to blink the build in led localted in the microcontroler board to test the connection.
 
 ## Install Board Drivers
 
@@ -21,15 +21,11 @@ First to develop anything using the Arduino IDE, we must install the correct dri
 
 Now we must install the board SDK inside Arduino IDE to develop any skecth in our new board:
 
-- Now we can go to Arduino Board Manager and select the board **esp32 by Espressif Systems version 3.3.0** to be installed
+- Now we can go to Arduino Board Manage and select the board **esp32 by Espressif Systems version 3.3.0** to be installed
 
 ![ESP32 Board](../captures/ESP32_board.png "ESP32 Board")
 
 ## Install Dependencies:
-
-- Adafruit MPU6050 by Adafruit 2.2.6
-- PubSubClient by Nick O'Leray v2.8
-- ArduinoJson by Benoit Blanchon v7.4.2
 
 ## Pins Board
 
