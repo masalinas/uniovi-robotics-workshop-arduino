@@ -25,7 +25,7 @@ Now we must install the board SDK inside Arduino IDE to develop any skecth in ou
 
 ![ESP32 Board](../captures/ESP32_board.png "ESP32 Board")
 
-## Install Dependencies:
+## Install Dependencies:
 
 - Adafruit ADXL345 by Adafruit 1.3.4
 - PubSubClient by Nick O'Leray v2.8
