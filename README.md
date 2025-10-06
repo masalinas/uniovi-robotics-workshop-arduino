@@ -1,10 +1,10 @@
 # Description
 
-Microcontroller basic sketch to test our microcontroller and host conection using the led in-build:
+Basic sketch to test our microcontroller and host conection using the microcontroller in-build led:
 
 - [ESP32 (ESP32 WROOM-D) microcontroller Blink build in sensor](./ESP32/README_Blink.md).
 
-Microcontroller sketchs to get data from a IMU sensor and publish to a MQTT topic using using several boards and IMUs
+Several sketchs to get data from a IMU sensor and publish to a MQTT topic using several boards:
 
 - [ESP8266 microcontroller with MPU6050 IMU sensor](./ESP8266/README_MPU6050.md).
 
