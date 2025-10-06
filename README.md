@@ -1,10 +1,12 @@
 # Description
 
+This repo offer documentation and sketches to connect several ESP microcontroller families with some IMUS to recover signals in real time and publish them using WIFI in a MQTT broker.
+
 Basic sketch to test our microcontroller and host conection using the microcontroller in-build led:
 
 - [ESP32 (ESP32 WROOM-D) microcontroller Blink build in sensor](./ESP32/README_Blink.md).
 
-Several sketchs to get data from a IMU sensor and publish to a MQTT topic using several boards:
+Several sketches to get data from a IMU sensor and publish to a MQTT topic using several boards:
 
 - [ESP8266 microcontroller with MPU6050 IMU sensor](./ESP8266/README_MPU6050.md).
 
