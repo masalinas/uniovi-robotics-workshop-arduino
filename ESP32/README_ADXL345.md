@@ -1,5 +1,5 @@
 # Description
-Microcontroller sketch to get data from a IMU sensor and publish to a MQTT topic using the board ESP32 (ESP32 WROOM-D) and the MPU6050 IMU sensor.
+Arduino sketch to get MPU sensor data and publish to a MQTT topic, using the board ESP32 (ESP32 WROOM-D) and the IMU MPU6050.
 
 ## Install Board Drivers
 
