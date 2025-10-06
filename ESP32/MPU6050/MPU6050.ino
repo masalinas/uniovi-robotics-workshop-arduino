@@ -9,8 +9,6 @@
 #define LED_PIN 2   // Most ESP32 DevKitC boards have the onboard LED on GPIO 2
 
 // WIFI setups
-//const char* WIFI_SSID = "MOVISTAR_7F50";
-//const char* WIFI_PASSWORD = "sg3iks7rRm47ijs77ing";
 const char* WIFI_SSID = "Uniovi-i40";
 const char* WIFI_PASSWORD = "1000000001";
 
@@ -32,7 +30,7 @@ const int   daylightOffset_sec = 7200; // adjust for DST winter timezone
 // Arduino sensor and clients
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
-Adafruit_MPU6050 mpu;
+Adafruit_MPU6050 imu;
 sensors_event_t a, g, temp;
 
 // Define a struct to hold sensor readings
@@ -89,17 +87,17 @@ void setup_mqtt_client() {
   client.setCallback(callback);
 }
 
-void setup_mpu_sensor() {
-  if (!mpu.begin()) {
-    Serial.println("Failed to find MPU6050 chip");
+void setup_imu_sensor() {
+  if (!imu.begin()) {
+    Serial.println("Failed to find MPU6050 IMU");
     while (1) { delay(10); }
   }
 
   Serial.println("MPU6050 Found!");
 
-  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
-  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
-  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);  
+  imu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  imu.setGyroRange(MPU6050_RANGE_500_DEG);
+  imu.setFilterBandwidth(MPU6050_BAND_21_HZ);  
 }
 
 void setup_time() {
@@ -122,8 +120,8 @@ void setup() {
   // setup mqtt client
   setup_mqtt_client();
 
-  // setup MPU sensor
-  setup_mpu_sensor();
+  // setup imu sensor
+  setup_imu_sensor();
 
   // setup real time
   setup_time();
@@ -155,8 +153,8 @@ void reconnect() {
 }
 
 IMUData getSensorData() {  
-  // get mpu sensor data
-  mpu.getEvent(&a, &g, &temp);
+  // get imu sensor data
+  imu.getEvent(&a, &g, &temp);
   
   Serial.print("Accel X: "); Serial.print(a.acceleration.x);
   Serial.print(", Y: "); Serial.print(a.acceleration.y);
@@ -205,17 +203,17 @@ void loop() {
   client.loop();
 
   // get sensor data
-  IMUData imu = getSensorData();
+  IMUData imuData = getSensorData();
 
   // Build JSON from sensor data
   StaticJsonDocument<200> doc;
-  doc["accX"] = imu.ax;
-  doc["accY"] = imu.ay;
-  doc["accZ"] = imu.az;
-  doc["gycX"] = imu.gx;
-  doc["gycY"] = imu.gy;
-  doc["gycZ"] = imu.gz;
-  doc["temp"] = imu.temp;
+  doc["accX"] = imuData.ax;
+  doc["accY"] = imuData.ay;
+  doc["accZ"] = imuData.az;
+  doc["gycX"] = imuData.gx;
+  doc["gycY"] = imuData.gy;
+  doc["gycZ"] = imuData.gz;
+  doc["temp"] = imuData.temp;
   //doc["timestamp"] = millis();
   doc["timestamp"] = getTimeNow();
 

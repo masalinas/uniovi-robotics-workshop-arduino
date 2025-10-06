@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
-#include <Adafruit_MPU6050.h>
+#include <Adafruit_ADXL345_U.h>
 #include <Adafruit_Sensor.h>
 #include <ArduinoJson.h>
 #include "time.h"
@@ -9,8 +9,6 @@
 #define LED_PIN 2   // Most ESP32 DevKitC boards have the onboard LED on GPIO 2
 
 // WIFI setups
-//const char* WIFI_SSID = "MOVISTAR_7F50";
-//const char* WIFI_PASSWORD = "sg3iks7rRm47ijs77ing";
 const char* WIFI_SSID = "Uniovi-i40";
 const char* WIFI_PASSWORD = "1000000001";
 
@@ -32,14 +30,12 @@ const int   daylightOffset_sec = 7200; // adjust for DST winter timezone
 // Arduino sensor and clients
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
-Adafruit_MPU6050 mpu;
-sensors_event_t a, g, temp;
+Adafruit_ADXL345_Unified imu = Adafruit_ADXL345_Unified(12345);
+sensors_event_t a;
 
 // Define a struct to hold sensor readings
 struct IMUData {
   float ax, ay, az;   // acceleration (m/s^2)
-  float gx, gy, gz;   // gyro (rad/s)
-  float temp;         // temperature (°C)
 };
 
 void setup_wifi() {
@@ -89,17 +85,23 @@ void setup_mqtt_client() {
   client.setCallback(callback);
 }
 
-void setup_mpu_sensor() {
-  if (!mpu.begin()) {
-    Serial.println("Failed to find MPU6050 chip");
+void setup_imu_sensor() {
+  if (!imu.begin()) {
+    Serial.println("Failed to find ADXL345 IMU");
     while (1) { delay(10); }
   }
 
-  Serial.println("MPU6050 Found!");
+  Serial.println("ADXL345 Found!");
 
-  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
-  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
-  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);  
+  // Set range: 2G, 4G, 8G, or 16G
+  imu.setRange(ADXL345_RANGE_16_G);
+  Serial.print("Range set to: ");
+  switch (imu.getRange()) {
+    case ADXL345_RANGE_2_G:  Serial.println("±2G"); break;
+    case ADXL345_RANGE_4_G:  Serial.println("±4G"); break;
+    case ADXL345_RANGE_8_G:  Serial.println("±8G"); break;
+    case ADXL345_RANGE_16_G: Serial.println("±16G"); break;
+  }
 }
 
 void setup_time() {
@@ -122,8 +124,8 @@ void setup() {
   // setup mqtt client
   setup_mqtt_client();
 
-  // setup MPU sensor
-  setup_mpu_sensor();
+  // setup imu sensor
+  setup_imu_sensor();
 
   // setup real time
   setup_time();
@@ -155,18 +157,12 @@ void reconnect() {
 }
 
 IMUData getSensorData() {  
-  // get mpu sensor data
-  mpu.getEvent(&a, &g, &temp);
+  // get imu sensor data
+  imu.getEvent(&a);
   
   Serial.print("Accel X: "); Serial.print(a.acceleration.x);
   Serial.print(", Y: "); Serial.print(a.acceleration.y);
   Serial.print(", Z: "); Serial.print(a.acceleration.z); Serial.println(" m/s^2");
-
-  Serial.print("Gyro X: "); Serial.print(g.gyro.x);
-  Serial.print(", Y: "); Serial.print(g.gyro.y);
-  Serial.print(", Z: "); Serial.print(g.gyro.z); Serial.println(" rad/s");
-
-  Serial.print("Temp: "); Serial.print(temp.temperature); Serial.println(" °C");
 
   delay(500);
 
@@ -175,12 +171,6 @@ IMUData getSensorData() {
   data.ax = a.acceleration.x;
   data.ay = a.acceleration.y;
   data.az = a.acceleration.z;
-
-  data.gx = g.gyro.x;
-  data.gy = g.gyro.y;
-  data.gz = g.gyro.z;
-
-  data.temp = temp.temperature;
 
   return data;
 }
@@ -205,18 +195,13 @@ void loop() {
   client.loop();
 
   // get sensor data
-  IMUData imu = getSensorData();
+  IMUData imuData = getSensorData();
 
   // Build JSON from sensor data
   StaticJsonDocument<200> doc;
-  doc["accX"] = imu.ax;
-  doc["accY"] = imu.ay;
-  doc["accZ"] = imu.az;
-  doc["gycX"] = imu.gx;
-  doc["gycY"] = imu.gy;
-  doc["gycZ"] = imu.gz;
-  doc["temp"] = imu.temp;
-  //doc["timestamp"] = millis();
+  doc["accX"] = imuData.ax;
+  doc["accY"] = imuData.ay;
+  doc["accZ"] = imuData.az;
   doc["timestamp"] = getTimeNow();
 
   char buffer[256];

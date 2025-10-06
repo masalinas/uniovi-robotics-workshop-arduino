@@ -27,7 +27,7 @@ Now we must install the board SDK inside Arduino IDE to develop any skecth in ou
 
 ## Install Dependencies:
 
-- Adafruit MPU6050 by Adafruit 2.2.6
+- Adafruit ADXL345 by Adafruit 1.3.4
 - PubSubClient by Nick O'Leray v2.8
 - ArduinoJson by Benoit Blanchon v7.4.2
 
