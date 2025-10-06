@@ -36,3 +36,9 @@ Now we must install the board SDK inside Arduino IDE to develop any skecth in ou
 ESP32 WROOM D32 Pins Board:
 
 ![ESP32 Pins Board](../captures/ESP32_WROOM_D.jpg "ESP32 Pins Board")
+
+ADXL345 IMU Pins:
+
+![ADXL345 Pins](../captures/ADXL345.jpg "ADXL345 Pins")
+
+ESP32 WROOM-D Microcontroller IMU ADXL345 connection:

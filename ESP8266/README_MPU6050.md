@@ -40,3 +40,11 @@ https://arduino.esp8266.com/stable/package_esp8266com_index.json
 ESP8266 Wemos D R1 Pins Board:
 
 ![ESP8266 Wemos D R1 Pins Board](../captures/ESP8266_Wemos_D_R1.png "ESP8266 Wemos D R1 Pins Board")
+
+MP6050 IMU Pins:
+
+![MPU6050 IMU](../captures/MPU6050.png "MPU6050 IMU")
+
+ESP8266 Microcontroller IMU MP5060  connection:
+
+!["Wemos IMU connection](../captures/WEMOS_MP560_connection.png "Wemos IMU connection")
