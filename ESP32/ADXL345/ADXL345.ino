@@ -13,8 +13,8 @@ const char* WIFI_SSID = "Uniovi-i40";
 const char* WIFI_PASSWORD = "1000000001";
 
 // MQTT setups
-const char* MQTT_HOST = "6.tcp.eu.ngrok.io";
-const int MQTT_PORT = 13455;
+const char* MQTT_HOST = "0.tcp.eu.ngrok.io";
+const int MQTT_PORT = 17068;
 const char* MQTT_USERNAME = "admin";
 const char* MQTT_PASSWORD = "password";
 const char* MQTT_CLIENT_ID = "ARD01";
