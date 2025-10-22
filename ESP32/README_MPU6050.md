@@ -33,7 +33,7 @@ Now we must install the board SDK inside Arduino IDE to develop any skecth in ou
 
 ## Pins Board
 
-ESP32 WROOM D32 Pins Board:
+ESP32 WROOM-32 Pins Board:
 
 ![ESP32 Pins Board](../captures/ESP32_WROOM_D.jpg "ESP32 Pins Board")
 
@@ -41,6 +41,6 @@ MP6050 IMU Pins:
 
 ![MPU6050 IMU](../captures/MPU6050.png "MPU6050 IMU")
 
-ESP32 WROOM-D Microcontroller IMU MP5060 connection:
+ESP32 WROOM-32 Microcontroller IMU MP5060 connection:
 
 ![ESP32 MPU6050 Connection](../captures/ESP32_MP560_connection.png "ESP32 MPU6050 Connection")
