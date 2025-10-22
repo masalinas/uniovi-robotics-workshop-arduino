@@ -42,3 +42,5 @@ ADXL345 IMU Pins:
 ![ADXL345 Pins](../captures/ADXL345.jpg "ADXL345 Pins")
 
 ESP32 WROOM-32 Microcontroller IMU ADXL345 connection:
+
+![ESP32_ADXL345 Board](../captures/ESP32_ADXL345_bb.png "ESP32_ADXL345 Board")
