@@ -18,3 +18,9 @@ Several sketches to get data from a IMU sensor and publish to a MQTT topic using
 To design our controller systems we will use a protoboard where insert the hardware(microcontrollers, sensors and actuators). The internal connections of these protoboards are like this:
 
 ![Protoboard connections](./captures/proboard.gif "Protoboard connections")
+
+## Workflow
+
+This is the workflow to be implemented to get data from your sensor to be published in a Message Broker
+
+![Workflow](./captures/Workflow.png "Workflow")

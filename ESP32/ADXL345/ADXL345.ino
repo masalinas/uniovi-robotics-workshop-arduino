@@ -192,7 +192,7 @@ void loop() {
     reconnect();
   }
   
-  client.loop();
+  client.loop(); // Keeps MQTT connection alive
 
   // get sensor data
   IMUData imuData = getSensorData();
